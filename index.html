@@ -15,6 +15,7 @@
             justify-content: center;
             align-items: center;
             height: 100vh;
+            position: relative;
         }
 
         .container {
@@ -175,6 +176,31 @@
             }
         }
 
+        .congratulations {
+            display: none;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 32px;
+            font-weight: bold;
+            color: #fff;
+            text-align: center;
+            background-color: rgba(39, 174, 96, 0.9);
+            padding: 20px 40px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            animation: fadeIn 0.5s ease-in-out;
+            z-index: 1000;
+        }
+
+        .congratulations img {
+            width: 50px;
+            height: 50px;
+            vertical-align: middle;
+            margin-right: 10px;
+        }
+
         @media (max-width: 600px) {
             .header {
                 font-size: 28px;
@@ -186,6 +212,17 @@
 
             button {
                 font-size: 14px;
+            }
+
+            .congratulations {
+                font-size: 24px;
+                padding: 15px 30px;
+            }
+
+            .congratulations img {
+                width: 40px;
+                height: 40px;
+                margin-right: 5px;
             }
         }
     </style>
@@ -225,6 +262,9 @@
         <div class="button-container">
             <button onclick="calculateOCE()">ENTER</button>
         </div>
+        <div id="congratsMessage" class="congratulations">
+            <img src="https://i.imgur.com/dW6gd9I.png" alt=""> Congratulations! OCE is above 85%
+        </div>
     </div>
 
     <script>
@@ -245,6 +285,13 @@
 
             const OCE = (actualQtyProduced / qtyToBeProduced) * 100;
             document.getElementById('OCE').value = OCE.toFixed(2) + '%';
+
+            const congratsMessage = document.getElementById('congratsMessage');
+            if (OCE >= 85) {
+                congratsMessage.style.display = 'block';
+            } else {
+                congratsMessage.style.display = 'none';
+            }
         }
     </script>
 </body>
