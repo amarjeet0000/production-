@@ -228,7 +228,7 @@
                 </tr>
                 <tr>
                     <td>QUANTITY TO BE PRODUCED</td>
-                    <td class="input-cell"><input type="number" id="qtyToBeProduced4" value="950" readonly></td>
+                    <td class="input-cell"><input type="number" id="qtyToBeProduced4" value="1175" readonly></td>
                 </tr>
                 <tr>
                     <td>ACTUAL QUANTITY PRODUCED</td>
@@ -285,8 +285,8 @@
                 timeLost = (qtyLost * 60) / 150;
                 OCE = (actualQtyProduced / qtyToBeProduced) * 100;
             } else if (section === '4') {
-                timeLost = (qtyLost * 60) / 120; // Adjust time lost formula for CCA4
-                OCE = (actualQtyProduced / qtyToBeProduced) * 100 * 0.9; // Adjust OCE formula for CCA4
+                timeLost = (qtyLost * 60) / 163; // Adjust time lost formula for CCA4
+                OCE = (actualQtyProduced / qtyToBeProduced) * 100 // Adjust OCE formula for CCA4
             }
 
             document.getElementById(`qtyLost${section}`).value = qtyLost;
