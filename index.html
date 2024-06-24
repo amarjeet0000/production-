@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>OCE Calculation</title>
     <style>
+        /* Global reset and basic styling */
         body {
             font-family: 'Arial', sans-serif;
             background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
@@ -14,18 +15,18 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
-            position: relative;
+            min-height: 100vh;
         }
 
         .container {
             padding: 20px;
-            max-width: 600px;
-            width: 100%;
+            max-width: 100%;
             background-color: rgba(44, 62, 80, 0.9);
             border-radius: 10px;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
             animation: fadeIn 1s ease-in-out;
+            position: relative;
+            text-align: center; /* Center content in the container */
         }
 
         @keyframes fadeIn {
@@ -38,7 +39,7 @@
         }
 
         .header {
-            font-size: 36px;
+            font-size: 28px;
             font-weight: bold;
             text-align: center;
             color: #f39c12;
@@ -57,43 +58,18 @@
             }
         }
 
-        .image-container {
-            text-align: center;
-            margin-bottom: 20px;
-            animation: zoomIn 1s ease-in-out;
-        }
-
-        .image-container img {
-            max-width: 100%;
-            height: auto;
-            border-radius: 10px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-            transition: transform 0.3s ease-in-out;
-        }
-
-        .image-container img:hover {
-            transform: scale(1.05);
-        }
-
-        @keyframes zoomIn {
-            from {
-                transform: scale(0.5);
-                opacity: 0;
-            }
-            to {
-                transform: scale(1);
-                opacity: 1;
-            }
+        .table-container {
+            margin-top: 20px;
+            overflow-x: auto;
+            animation: fadeIn 1s ease-in-out;
         }
 
         table {
             width: 100%;
             border-collapse: collapse;
-            margin-top: 20px;
             background-color: #34495e;
             border-radius: 10px;
-            overflow: hidden;
-            animation: fadeIn 1s ease-in-out;
+            margin-bottom: 20px;
         }
 
         td, th {
@@ -101,14 +77,14 @@
             text-align: center;
             border: 1px solid #444;
             color: #fff;
-            font-size: 18px;
+            font-size: 16px;
         }
 
         .input-cell input, .result-cell input {
             width: 100%;
-            padding: 10px;
+            padding: 8px;
             text-align: center;
-            font-size: 18px;
+            font-size: 16px;
             border: none;
             border-radius: 5px;
             box-sizing: border-box;
@@ -144,9 +120,10 @@
             border-radius: 6px;
             cursor: pointer;
             transition: background-color 0.3s, transform 0.3s;
-            font-size: 16px;
+            font-size: 14px;
             font-weight: bold;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            margin: 0 10px;
         }
 
         button:hover {
@@ -154,75 +131,52 @@
             transform: scale(1.1);
         }
 
-        .a {
-            color: #c6cfbf;
-            background-color: #070606;
-            font-size: 24px;
-            text-align: center;
-            padding: 20px;
-            border-radius: 10px 0 0 10px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-            animation: slideInLeft 1s ease-in-out;
-        }
-
-        @keyframes slideInLeft {
-            from {
-                transform: translateX(-100%);
-                opacity: 0;
-            }
-            to {
-                transform: translateX(0);
-                opacity: 1;
-            }
-        }
-
-        .congratulations {
+        .congratulations, .bad, .ok {
             display: none;
             position: absolute;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            font-size: 32px;
+            font-size: 20px;
             font-weight: bold;
             color: #fff;
             text-align: center;
-            background-color: rgba(39, 174, 96, 0.9);
-            padding: 20px 40px;
+            padding: 15px 30px;
             border-radius: 10px;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
             animation: fadeIn 0.5s ease-in-out;
             z-index: 1000;
         }
 
-        .congratulations img {
-            width: 50px;
-            height: 50px;
-            vertical-align: middle;
-            margin-right: 10px;
+        .congratulations {
+            background-color: rgba(39, 174, 96, 0.9);
+        }
+
+        .bad {
+            background-color: rgba(192, 57, 43, 0.9);
+        }
+
+        .ok {
+            background-color: rgba(243, 156, 18, 0.9);
+        }
+
+        /* Active section header row style */
+        .active-header {
+            background-color: #4CAF50; /* Green */
         }
 
         @media (max-width: 600px) {
             .header {
-                font-size: 28px;
+                font-size: 24px;
             }
 
-            td, th {
-                font-size: 16px;
-            }
-
-            button {
+            .input-cell input, .result-cell input {
                 font-size: 14px;
             }
 
-            .congratulations {
-                font-size: 24px;
-                padding: 15px 30px;
-            }
-
-            .congratulations img {
-                width: 40px;
-                height: 40px;
-                margin-right: 5px;
+            .congratulations, .bad, .ok {
+                font-size: 18px;
+                padding: 10px 20px;
             }
         }
     </style>
@@ -230,67 +184,159 @@
 <body>
     <div class="container">
         <div class="header">Production Report</div>
-        <div class="image-container">
-            <img src="https://images.unsplash.com/photo-1603791440384-56cd371ee9a7" alt="Production Report">
-        </div>
-        <p style="text-align: center;">UPH = 150</p>
-        <table>
-            <tr>
-                <td rowspan="6" class="a">CCA8</td>
-            </tr>
-            <tr>
-                <td>QUANTITY TO BE PRODUCED</td>
-                <td class="input-cell"><input type="number" id="qtyToBeProduced" value="1075" readonly></td>
-            </tr>
-            <tr>
-                <td>ACTUAL QUANTITY PRODUCED</td>
-                <td class="input-cell"><input type="number" id="actualQtyProduced"></td>
-            </tr>
-            <tr>
-                <td>QUANTITY LOST</td>
-                <td class="result-cell"><input type="number" id="qtyLost" readonly></td>
-            </tr>
-            <tr>
-                <td>TIME LOST</td>
-                <td class="result-cell"><input type="number" id="timeLost" readonly></td>
-            </tr>
-            <tr>
-                <td>OCE</td>
-                <td class="result-cell"><input type="text" id="OCE" readonly></td>
-            </tr>
-        </table>
+        
+        <!-- Toggle buttons for CCA8 and CCA4 sections -->
         <div class="button-container">
-            <button onclick="calculateOCE()">ENTER</button>
+            <button onclick="showCCA('cca8-table')">Show CCA8</button>
+            <button onclick="showCCA('cca4-table')">Show CCA4</button>
         </div>
+        
+        <!-- CCA8 Table -->
+        <div class="table-container cca8-table">
+            <table>
+                <tr class="header-row header-row-cca8">
+                    <th colspan="2">CCA8</th>
+                </tr>
+                <tr>
+                    <td>QUANTITY TO BE PRODUCED</td>
+                    <td class="input-cell"><input type="number" id="qtyToBeProduced8" value="1075" readonly></td>
+                </tr>
+                <tr>
+                    <td>ACTUAL QUANTITY PRODUCED</td>
+                    <td class="input-cell"><input type="number" id="actualQtyProduced8"></td>
+                </tr>
+                <tr>
+                    <td>QUANTITY LOST</td>
+                    <td class="result-cell"><input type="number" id="qtyLost8" readonly></td>
+                </tr>
+                <tr>
+                    <td>TIME LOST</td>
+                    <td class="result-cell"><input type="number" id="timeLost8" readonly></td>
+                </tr>
+                <tr>
+                    <td>OCE</td>
+                    <td class="result-cell"><input type="text" id="OCE8" readonly></td>
+                </tr>
+            </table>
+        </div>
+        
+        <!-- CCA4 Table -->
+        <div class="table-container cca4-table" style="display: none;">
+            <table>
+                <tr class="header-row header-row-cca4">
+                    <th colspan="2">CCA4</th>
+                </tr>
+                <tr>
+                    <td>QUANTITY TO BE PRODUCED</td>
+                    <td class="input-cell"><input type="number" id="qtyToBeProduced4" value="950" readonly></td>
+                </tr>
+                <tr>
+                    <td>ACTUAL QUANTITY PRODUCED</td>
+                    <td class="input-cell"><input type="number" id="actualQtyProduced4"></td>
+                </tr>
+                <tr>
+                    <td>QUANTITY LOST</td>
+                    <td class="result-cell"><input type="number" id="qtyLost4" readonly></td>
+                </tr>
+                <tr>
+                    <td>TIME LOST</td>
+                    <td class="result-cell"><input type="number" id="timeLost4" readonly></td>
+                </tr>
+                <tr>
+                    <td>OCE</td>
+                    <td class="result-cell"><input type="text" id="OCE4" readonly></td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- Messages -->
         <div id="congratsMessage" class="congratulations">
-            <img src="https://i.imgur.com/dW6gd9I.png" alt=""> Congratulations! OCE is above 85%
+            Congratulations! OCE is above 85%
+        </div>
+        <div id="badMessage" class="bad">
+            Better luck next time!
+        </div>
+        <div id="okMessage" class="ok">
+            OCE is acceptable.
+        </div>
+
+        <!-- Button to trigger calculations -->
+        <div class="button-container">
+            <button onclick="calculateOCE('8')">ENTER CCA8</button>
+            <button onclick="calculateOCE('4')">ENTER CCA4</button>
+            <button onclick="refreshPage()">REFRESH</button>
         </div>
     </div>
 
     <script>
-        function calculateOCE() {
-            const qtyToBeProduced = parseFloat(document.getElementById('qtyToBeProduced').value);
-            const actualQtyProduced = parseFloat(document.getElementById('actualQtyProduced').value);
+        function calculateOCE(section) {
+            const qtyToBeProduced = parseFloat(document.getElementById(`qtyToBeProduced${section}`).value);
+            const actualQtyProduced = parseFloat(document.getElementById(`actualQtyProduced${section}`).value);
 
             if (isNaN(actualQtyProduced) || actualQtyProduced < 0) {
                 alert('Please enter a valid number for Actual Quantity Produced.');
                 return;
             }
 
-            const qtyLost = qtyToBeProduced - actualQtyProduced;
-            document.getElementById('qtyLost').value = qtyLost;
+            let qtyLost = qtyToBeProduced - actualQtyProduced;
+            let timeLost, OCE;
 
-            const timeLost = (qtyLost * 60) / 150;
-            document.getElementById('timeLost').value = timeLost.toFixed(2);
+            if (section === '8') {
+                timeLost = (qtyLost * 60) / 150;
+                OCE = (actualQtyProduced / qtyToBeProduced) * 100;
+            } else if (section === '4') {
+                timeLost = (qtyLost * 60) / 120; // Adjust time lost formula for CCA4
+                OCE = (actualQtyProduced / qtyToBeProduced) * 100 * 0.9; // Adjust OCE formula for CCA4
+            }
 
-            const OCE = (actualQtyProduced / qtyToBeProduced) * 100;
-            document.getElementById('OCE').value = OCE.toFixed(2) + '%';
+            document.getElementById(`qtyLost${section}`).value = qtyLost;
+            document.getElementById(`timeLost${section}`).value = timeLost.toFixed(2);
+            document.getElementById(`OCE${section}`).value = OCE.toFixed(2) + '%';
 
+            // Show/hide messages based on OCE
             const congratsMessage = document.getElementById('congratsMessage');
+            const badMessage = document.getElementById('badMessage');
+            const okMessage = document.getElementById('okMessage');
+
             if (OCE >= 85) {
                 congratsMessage.style.display = 'block';
-            } else {
+                badMessage.style.display = 'none';
+                okMessage.style.display = 'none';
+            } else if (OCE < 60) {
+                badMessage.style.display = 'block';
                 congratsMessage.style.display = 'none';
+                okMessage.style.display = 'none';
+            } else {
+                okMessage.style.display = 'block';
+                congratsMessage.style.display = 'none';
+                badMessage.style.display = 'none';
+            }
+        }
+
+        function refreshPage() {
+            location.reload();
+        }
+
+        function showCCA(section) {
+            const cca8Table = document.querySelector('.cca8-table');
+            const cca4Table = document.querySelector('.cca4-table');
+
+            // Hide all tables first
+            cca8Table.style.display = 'none';
+            cca4Table.style.display = 'none';
+
+            // Remove active class from all headers
+            document.querySelectorAll('.header-row').forEach(row => {
+                row.classList.remove('active-header');
+            });
+
+            // Show the selected table and highlight the header
+            if (section === 'cca8-table') {
+                cca8Table.style.display = 'block';
+                document.querySelector('.header-row-cca8').classList.add('active-header');
+            } else if (section === 'cca4-table') {
+                cca4Table.style.display = 'block';
+                document.querySelector('.header-row-cca4').classList.add('active-header');
             }
         }
     </script>
